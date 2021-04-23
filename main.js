@@ -1,44 +1,38 @@
 const playBtn = document.querySelector('.game__playBtn');
 const game__field = document.querySelector('.game__field');
-// const popup = document.querySelector('.pop-up');
+const fieldRect = game__field.getBoundingClientRect();
+const CARROT_SIZE = 80;
 
 let cnt = 0;
 
-function getImage(){
-    let x = new Array();
-    let y = new Array();
-    let x1 = new Array();
-    let y1 = new Array();
-
-    for(let i = 0 ; i < 7 ; i++){
-        x[i] = Math.floor(Math.random() * 181) + 230;
-        y[i] = Math.floor(Math.random() * 500) + 50;
-        x1[i] = Math.floor(Math.random() * 181) + 230;
-        y1[i] = Math.floor(Math.random() * 500) + 50;
-    }
-    console.log(x);
-    console.log(y);
-
-    game__field.innerHTML = `
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c1" style="display: flex ; position: absolute; top: ${x[0]}px; left: ${y[0]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c2" style="display: flex ; position: absolute; top: ${x[1]}px; left: ${y[1]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c3" style="display: flex ; position: absolute; top: ${x[2]}px; left: ${y[2]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c4" style="display: flex ; position: absolute; top: ${x[3]}px; left: ${y[3]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c5" style="display: flex ; position: absolute; top: ${x[4]}px; left: ${y[4]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c6" style="display: flex ; position: absolute; top: ${x[5]}px; left: ${y[5]}px">
-    <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c7" style="display: flex ; position: absolute; top: ${x[6]}px; left: ${y[6]}px">
-
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b1" style="display: flex ; position: absolute; top: ${x1[0]}px; left: ${y1[0]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b2" style="display: flex ; position: absolute; top: ${x1[1]}px; left: ${y1[1]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b3" style="display: flex ; position: absolute; top: ${x1[2]}px; left: ${y1[2]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b4" style="display: flex ; position: absolute; top: ${x1[3]}px; left: ${y1[3]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b5" style="display: flex ; position: absolute; top: ${x1[4]}px; left: ${y1[4]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b6" style="display: flex ; position: absolute; top: ${x1[5]}px; left: ${y1[5]}px">
-    <img src="/img/bug.png" alt="bug" class="bug" data-id="b7" style="display: flex ; position: absolute; top: ${x1[6]}px; left: ${y1[6]}px">
-    `
+function initGame() {
+    addItem('carrot', 7, 'img/carrot.png');
+    addItem('bug', 7, 'img/bug.png');
 }
 
-function count(sign) {
+function addItem(className, count, imgPath) {
+    const x1 = 0;
+    const y1 = 0;
+    const x2 = fieldRect.width - CARROT_SIZE;
+    const y2 = fieldRect.height - CARROT_SIZE;
+    for(let i=0; i < count ; i++){
+        const item = document.createElement('img');
+        item.setAttribute('class', className);
+        item.setAttribute('src', imgPath);
+        item.style.position = 'absolute';
+        const x = randomNumber(x1, x2);
+        const y = randomNumber(y1, y2);
+        item.style.left = `${x}px`;
+        item.style.top = `${y}px`;
+        game__field.appendChild(item);
+    }
+}
+
+function randomNumber(min, max) {
+    return Math.random() * (max - min) + min
+}
+
+function counter(sign) {
     const countTag = document.querySelector('.game__score');
     let cnt = game__field.getElementsByTagName("*").length - 7;
     //console.log(cnt);
@@ -78,7 +72,7 @@ function startTimer(){
             popup.setAttribute('class', 'pop-up');
             popup__msg.textContent = `you lost💩`;
         } else if(event.target.alt == 'carrot'){
-            let cnt = count();
+            let cnt = counter();
             console.log(cnt,'ouo');
             if(cnt == 0){
                 clearInterval(timer);
@@ -89,7 +83,7 @@ function startTimer(){
 }
 
 playBtn.addEventListener('click', (event) => {
-        getImage();
+        initGame();
         startTimer();
 
         playBtn.innerHTML = `
@@ -97,7 +91,7 @@ playBtn.addEventListener('click', (event) => {
         `;
         console.log(event.target.dataset.id);
         if(event.target.dataset.id){
-            count(1);
+            counter(1);
         }
 });
 
@@ -107,7 +101,7 @@ game__field.addEventListener('click', (event) => {
     if(event.target.alt == 'carrot'){
         const tobeDeleted = document.querySelector(`.carrot[data-id="${id}"]`);
         tobeDeleted.remove();
-        count();
+        counter();
     } else if (id == 'replay'){
         window.location.reload(true);
     }
