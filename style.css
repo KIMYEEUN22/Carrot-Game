@@ -1,76 +1,71 @@
 body {
   text-align: center;
   background-color: black;
-  background-image: url("/img/background.png");
-  background-repeat: no-repeat;
-  background-size: 600px 400px;
-  background-position: 50% 80px;
 }
 
-section {
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 200ms ease-in;
+}
+button:hover {
+  transform: scale(1.1);
+}
+
+.game {
   margin: auto;
-  margin-top: 80px;
-  width: 600px;
-  height: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  height: 450px;
+  background: url("/img/background.png") center/cover;
+  border-radius: 20px;
 }
 
-.header {
-  padding-top: 10px;
+.game__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .game__playBtn {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   background-color: blanchedalmond;
-  color: black;
-  border-radius: 15%;
-  font-size: 20px;
-  border-style: solid;
-  border-color: black;
-  border-width: 3px;
+  font-size: 30px;
+  border: 3px solid black;
+  border-radius: 15px;
 }
 
 .game__timer {
-  display: flex;
-  margin: auto;
   margin-top: 10px;
-  width: 80px;
-  height: 30px;
+  width: 100px;
   background-color: white;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10%;
-  border-style: solid;
-  border-color: black;
-  border-width: 3px;
-  font-size: 20px;
+  border: 3px solid black;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 25px;
 }
 
-.game__counter {
-  display: flex;
-  margin: auto;
+.game__score {
+  text-align: center;
   margin-top: 5px;
   width: 40px;
   height: 40px;
   background-color: blanchedalmond;
-  justify-content: center;
-  align-items: center;
   border-radius: 50%;
-  border-style: solid;
-  border-color: black;
-  border-width: 3px;
-  font-size: 25px;
+  border: 3px solid black;
+  font-size: 38px;
 }
 
-.main {
-  padding-top: 25px;
-  width: 600px;
-  height: 230px;
+.game__field {
+  width: 100%;
+  height: 100%;
+  margin-top: 40px;
 }
 
-.img {
-  z-index: auto;
-}
 .carrot:hover {
   transform: scale(1.1);
 }
@@ -79,35 +74,32 @@ section {
   transform: scale(1.1);
 }
 
-.box {
-  position: relative;
-  z-index: auto;
+.pop-up {
+  display: block;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.5);
   width: 300px;
   height: 100px;
-  border-radius: 10%;
-  margin-top: 15%;
+  border-radius: 25px;
+  text-align: center;
+  padding: 20px;
+  transform: translateY(-150%);
 }
 
-.replay {
-  width: 40px;
-  height: 40px;
+.pop-up--hide {
+  display: none;
+}
+
+.pop-up__replay {
+  width: 55px;
+  height: 55px;
   background-color: blanchedalmond;
-  color: black;
-  border-radius: 15%;
-  font-size: 20px;
-  border-style: solid;
-  border-color: black;
-  border-width: 3px;
-  margin-top: 4%;
+  border: 3px solid black;
+  border-radius: 15px;
+  font-size: 30px;
 }
 
-.replay:hover {
-  transform: scale(1.1);
-}
-
-.msg {
+.pop-up__msg {
   display: block;
   font-size: 32px;
   color: white;

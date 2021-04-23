@@ -1,7 +1,6 @@
 const playBtn = document.querySelector('.game__playBtn');
-const main = document.querySelector('main');
-const imgBox = document.querySelector('.img');
-const msgBox = document.querySelector('.pop-up');
+const game__field = document.querySelector('.game__field');
+// const popup = document.querySelector('.pop-up');
 
 let cnt = 0;
 
@@ -20,7 +19,7 @@ function getImage(){
     console.log(x);
     console.log(y);
 
-    imgBox.innerHTML = `
+    game__field.innerHTML = `
     <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c1" style="display: flex ; position: absolute; top: ${x[0]}px; left: ${y[0]}px">
     <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c2" style="display: flex ; position: absolute; top: ${x[1]}px; left: ${y[1]}px">
     <img src="/img/carrot.png" alt="carrot" class="carrot" data-id="c3" style="display: flex ; position: absolute; top: ${x[2]}px; left: ${y[2]}px">
@@ -40,8 +39,8 @@ function getImage(){
 }
 
 function count(sign) {
-    const countTag = document.querySelector('.game__counter');
-    let cnt = imgBox.getElementsByTagName("*").length - 7;
+    const countTag = document.querySelector('.game__score');
+    let cnt = game__field.getElementsByTagName("*").length - 7;
     //console.log(cnt);
     if(sign){
         countTag.innerHTML = `
@@ -58,6 +57,8 @@ function count(sign) {
 
 function startTimer(){
     const timerTag = document.querySelector('.game__timer');
+    const popup = document.querySelector('.pop-up--hide');
+    const popup__msg = document.querySelector('.pop-up__msg');
     let num = 10;
     
     const timer = setInterval(() => {
@@ -66,47 +67,22 @@ function startTimer(){
         //console.log(num);
         if(num == -1) {
             clearInterval(timer);
-            msgBox.innerHTML = `
-            <footer class="footer">
-                <div class="box">
-                    <button class="replay">
-                        <i class="fas fa-redo-alt" data-id="replay"></i>
-                    </button>
-                    <span class="msg">you lost💩</span> 
-                </div>
-            </footer>
-            `;
+            popup.setAttribute('class', 'pop-up');
+            popup__msg.textContent = `you lost💩`;
         } 
     },1000);
-    imgBox.addEventListener('click', (event) => {
+    game__field.addEventListener('click', (event) => {
         if(event.target.alt == 'bug'){
             console.log('bug');
             clearInterval(timer);
-            msgBox.innerHTML = `
-            <footer class="footer">
-                <div class="box">
-                    <button class="replay">
-                        <i class="fas fa-redo-alt" data-id="replay"></i>
-                    </button>
-                    <span class="msg">you lost💩</span> 
-                </div>
-            </footer>
-            `;
+            popup.setAttribute('class', 'pop-up');
+            popup__msg.textContent = `you lost💩`;
         } else if(event.target.alt == 'carrot'){
             let cnt = count();
-            console.log(cnt);
-            if(cnt == 1){
+            console.log(cnt,'ouo');
+            if(cnt == 0){
                 clearInterval(timer);
-                msgBox.innerHTML = `
-                <footer class="footer">
-                    <div class="box">
-                        <button class="replay">
-                            <i class="fas fa-redo-alt" data-id="replay"></i>
-                        </button>
-                        <span class="msg">you won🎉</span> 
-                    </div>
-                </footer>
-                `;
+                popup.setAttribute('class', 'pop-up');
             }
         }
     });
@@ -125,7 +101,7 @@ playBtn.addEventListener('click', (event) => {
         }
 });
 
-main.addEventListener('click', (event) => {
+game__field.addEventListener('click', (event) => {
     const id = event.target.dataset.id;
 
     if(event.target.alt == 'carrot'){
