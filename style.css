@@ -18,7 +18,7 @@ section {
   padding-top: 10px;
 }
 
-.playBtn {
+.game__playBtn {
   width: 40px;
   height: 40px;
   background-color: blanchedalmond;
@@ -30,7 +30,7 @@ section {
   border-width: 3px;
 }
 
-.timer {
+.game__timer {
   display: flex;
   margin: auto;
   margin-top: 10px;
@@ -46,7 +46,7 @@ section {
   font-size: 20px;
 }
 
-.counter {
+.game__counter {
   display: flex;
   margin: auto;
   margin-top: 5px;

@@ -1,7 +1,7 @@
-const playBtn = document.querySelector('.playBtn');
+const playBtn = document.querySelector('.game__playBtn');
 const main = document.querySelector('main');
 const imgBox = document.querySelector('.img');
-const msgBox = document.querySelector('.alert');
+const msgBox = document.querySelector('.pop-up');
 
 let cnt = 0;
 
@@ -40,7 +40,7 @@ function getImage(){
 }
 
 function count(sign) {
-    const countTag = document.querySelector('.counter');
+    const countTag = document.querySelector('.game__counter');
     let cnt = imgBox.getElementsByTagName("*").length - 7;
     //console.log(cnt);
     if(sign){
@@ -57,7 +57,7 @@ function count(sign) {
 }
 
 function startTimer(){
-    const timerTag = document.querySelector('.timer');
+    const timerTag = document.querySelector('.game__timer');
     let num = 10;
     
     const timer = setInterval(() => {
