@@ -9,6 +9,7 @@ const popup__msg = document.querySelector('.pop-up__msg');
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 7;
 const BUG_COUNT = 7;
+const GAME_DURATION_SEC = 5;
 
 let started = false;
 let score = 0;
@@ -43,6 +44,41 @@ function showStopBtn() {
 function showScoreAndTimer() {
     gameTimer.style.visibility = 'visible';
     gameScore.style.visibility = 'visible';
+}
+
+function startTimer(){
+    let remainingTimeSec = GAME_DURATION_SEC;
+    updateTimerText(remainingTimeSec);
+    timer = setInterval(() => {
+    if(remainingTimeSec <= 0) {
+        clearInterval(timer);
+        popup.setAttribute('class', 'pop-up');
+        popup__msg.textContent = `you lost💩`;
+				return;
+    } 
+    updateTimerText(--remainingTimeSec);
+    },1000);
+    gameField.addEventListener('click', (event) => {
+        if(event.target.alt == 'bug'){
+            console.log('bug');
+            clearInterval(timer);
+            popup.setAttribute('class', 'pop-up');
+            popup__msg.textContent = `you lost💩`;
+        } else if(event.target.alt == 'carrot'){
+            let cnt = counter();
+            console.log(cnt,'ouo');
+            if(cnt == 0){
+                clearInterval(timer);
+                popup.setAttribute('class', 'pop-up');
+            }
+        }
+    });
+}
+
+function updateTimerText(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    gameTimer.innerHTML = ` ${minutes} : ${seconds} `;
 }
 
 function initGame() {
@@ -85,36 +121,6 @@ function counter() {
     `;
 
     return cnt;
-}
-
-function startTimer(){
-    let num = 10;
-    
-    const timer = setInterval(() => {
-        gameTimer.innerHTML = ` 0 : ${num} `;
-        num --;
-        //console.log(num);
-        if(num == -1) {
-            clearInterval(timer);
-            popup.setAttribute('class', 'pop-up');
-            popup__msg.textContent = `you lost💩`;
-        } 
-    },1000);
-    gameField.addEventListener('click', (event) => {
-        if(event.target.alt == 'bug'){
-            console.log('bug');
-            clearInterval(timer);
-            popup.setAttribute('class', 'pop-up');
-            popup__msg.textContent = `you lost💩`;
-        } else if(event.target.alt == 'carrot'){
-            let cnt = counter();
-            console.log(cnt,'ouo');
-            if(cnt == 0){
-                clearInterval(timer);
-                popup.setAttribute('class', 'pop-up');
-            }
-        }
-    });
 }
 
 gameField.addEventListener('click', (event) => {
