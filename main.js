@@ -4,7 +4,7 @@ const playBtn = document.querySelector('.game__playBtn');
 const gameScore = document.querySelector('.game__score');
 const gameTimer = document.querySelector('.game__timer');
 const popup = document.querySelector('.pop-up--hide');
-const popup__msg = document.querySelector('.pop-up__msg');
+const popupText = document.querySelector('.pop-up__text');
 
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 7;
@@ -32,13 +32,19 @@ function startGame() {
 }
 
 function stopGame() {
-
+    stopTimer();
+    hideGameBtn();
+    showPopup('replay❓');
 }
 
 function showStopBtn() {
     const icon = playBtn.querySelector('.fa-play');
     icon.classList.add('fa-stop');
     icon.classList.remove('fa-play');
+}
+
+function hideGameBtn() {
+    playBtn.style.visibility = 'hidden';
 }
 
 function showScoreAndTimer() {
@@ -52,9 +58,7 @@ function startTimer(){
     timer = setInterval(() => {
     if(remainingTimeSec <= 0) {
         clearInterval(timer);
-        popup.setAttribute('class', 'pop-up');
-        popup__msg.textContent = `you lost💩`;
-				return;
+        return;
     } 
     updateTimerText(--remainingTimeSec);
     },1000);
@@ -63,7 +67,7 @@ function startTimer(){
             console.log('bug');
             clearInterval(timer);
             popup.setAttribute('class', 'pop-up');
-            popup__msg.textContent = `you lost💩`;
+            popupText.textContent = `you lost💩`;
         } else if(event.target.alt == 'carrot'){
             let cnt = counter();
             console.log(cnt,'ouo');
@@ -75,10 +79,19 @@ function startTimer(){
     });
 }
 
+function stopTimer() {
+    clearInterval(timer);
+}
+
 function updateTimerText(time) {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     gameTimer.innerHTML = ` ${minutes} : ${seconds} `;
+}
+
+function showPopup(text) {
+    popup.setAttribute('class', 'pop-up');
+    popupText.textContent = text;
 }
 
 function initGame() {
