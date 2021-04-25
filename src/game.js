@@ -1,8 +1,14 @@
 'use strict';
-import GameField from './game-field.js';
+import {Field ,ItemType } from './game-field.js';
 import * as sound from './sound.js';
 
-export default class GameBuilder {
+export const Reason = Object.freeze({
+    win: 'win',
+    lost: 'lost',
+    cancel: 'cancel'
+})
+
+export class GameBuilder {
     withGameDuration(duration){
         this.gameDuration = duration;
         return this;
@@ -39,13 +45,13 @@ class Game {
         this.playBtn = document.querySelector('.game__playBtn');
         this.playBtn.addEventListener('click', () => {
             if(this.started){
-                this.stop();
+                this.stop(Reason.cancel);
             } else {
                 this.start();
             }
         });
 
-        this.gameField = new GameField(carrotCount, bugCount);
+        this.gameField = new Field(carrotCount, bugCount);
         this.gameField.setClickListner(this.onItemClick);
         
         this.started = false;
@@ -67,37 +73,27 @@ class Game {
         sound.playBackground();
     }
     
-    stop() {
-        this.started = false;
-        this.stopTimer();
-        this.hideGameBtn();
-        sound.playAlert();
-        sound.stopBackground();
-        this.onGameStop && this.onGameStop('cancel');
-    }
-
-    finish(win){
+    stop(reason) {
         this.started = false;
         this.stopTimer();
         this.hideGameBtn();
         sound.stopBackground();
-        this.onGameStop && this.onGameStop(win ? 'win' : 'lost');
+        this.onGameStop && this.onGameStop(reason);
     }
-    
 
     onItemClick = (item) => {
         if(!this.started){
             return;
         }
-        if(item === 'carrot'){
+        if(item === ItemType.carrot){
             this.score--;
             this.updateScoreBoard();
             if(this.score == 0){
                 sound.playWin();
-                this.finish(true);
+                this.stop(Reason.win);
             }
-        } else if(item === 'bug'){
-            this.finish(false);
+        } else if(item === ItemType.bug){
+            this.stop(Reason.lost);
         }
     }
  
@@ -123,7 +119,7 @@ class Game {
         this.updateTimerText(remainingTimeSec);
         this.timer = setInterval(() => {
         if(remainingTimeSec <= 0) {
-            this.finish(false);
+            this.stop(Reason.lost);
             return;
         } 
         this.updateTimerText(--remainingTimeSec);
